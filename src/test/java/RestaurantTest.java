@@ -1,25 +1,41 @@
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.withSettings;
 
+@ExtendWith(MockitoExtension.class)
 class RestaurantTest {
-    Restaurant restaurant;
+    @Mock
+    private Restaurant restaurant;
     //REFACTOR ALL THE REPEATED LINES OF CODE
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>OPEN/CLOSED<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     //-------FOR THE 2 TESTS BELOW, YOU MAY USE THE CONCEPT OF MOCKING, IF YOU RUN INTO ANY TROUBLE
     @Test
     public void is_restaurant_open_should_return_true_if_time_is_between_opening_and_closing_time(){
-        //WRITE UNIT TEST CASE HERE
+        LocalTime openingTime = LocalTime.parse("10:30:00");
+        LocalTime closingTime = LocalTime.parse("22:00:00");
+        restaurant = Mockito.mock(Restaurant.class, withSettings().useConstructor("Chaos Control Cafe", "Mumbai", openingTime, closingTime));
+        LocalTime mockedTime = LocalTime.parse("12:30:00");
+        Mockito.when(restaurant.getCurrentTime()).thenReturn(mockedTime);
+        assertTrue(restaurant.isRestaurantOpen());
     }
 
     @Test
     public void is_restaurant_open_should_return_false_if_time_is_outside_opening_and_closing_time(){
-        //WRITE UNIT TEST CASE HERE
-
+        LocalTime openingTime = LocalTime.parse("10:30:00");
+        LocalTime closingTime = LocalTime.parse("22:00:00");
+        restaurant = Mockito.mock(Restaurant.class, withSettings().useConstructor("Chaos Control Cafe", "Mumbai", openingTime, closingTime));
+        LocalTime mockedTime = LocalTime.parse("08:30:00");
+        Mockito.when(restaurant.getCurrentTime()).thenReturn(mockedTime);
+        assertFalse(restaurant.isRestaurantOpen());
     }
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<OPEN/CLOSED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
