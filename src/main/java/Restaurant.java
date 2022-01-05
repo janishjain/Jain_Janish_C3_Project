@@ -69,4 +69,19 @@ public class Restaurant {
         return name;
     }
 
+    //Method to get the price of the item using item_name
+    public int getItemPrice(String itemName) throws itemNotFoundException {
+        int price = findItemByName(itemName).getPrice();
+        return price;
+    }
+
+    //Method to total amount by making the list of the items needed by the user
+    public int getTotalAmountOfItems(List<Item> items){
+        int amount = 0;
+        for(Item i : items){
+            amount += i.getPrice();
+        }
+
+        return amount;
+    }
 }
